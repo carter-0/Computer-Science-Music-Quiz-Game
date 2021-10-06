@@ -3,15 +3,15 @@
 ### Structure:
 
 This project is broken down into 3 files:
-* main.py
-* db_manager.py
-* nea.db
+* main.py - Main Code
+* db_manager.py - Contains functions for interacting with SQLite 3.0 Database
+* nea.db - SQLite 3.0 Database file - contains Scores, Songs and Logins
 
 ### main.py:
 
 main.py is where the game logic can be found. It's the file that is run in order to start the game, and contains the startup and shutdown logic.
 
-The first thing that happens in this file is try_login() is called.
+The first thing that happens in this file is `try_login()` is called.
 
 ```
 def try_login():
@@ -21,7 +21,7 @@ def try_login():
 	return db_manager.check_login(username, password), username, password
 ```
 
-This function queries the SQL database using the db_manager file to check if the login is valid. The returned variables are assigned as can be seen below, and used to check if the user is authenticated:
+This function queries the SQL database using the `db_manager.py` file to check if the login is valid. The returned variables are assigned as can be seen below, and used to check if the user is authenticated:
 
 ```
 logged_in, username, password = try_login()
