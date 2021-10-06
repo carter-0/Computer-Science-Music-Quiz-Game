@@ -305,7 +305,7 @@ This updates the column `score` for the user in the row where the `username` mat
 
 #### get_top_5()
 
-This function returns the top 5 scores from the leaderboard database in the form of a nested list.
+This function returns the top 5 scores from the [`leaderboard`](#leaderboard) table in the form of a nested list.
 
 ```
 def get_top_5(): ##returns top 5 from leaderboard in nested list
@@ -324,7 +324,7 @@ In the first lines the SQL database is opened and the following SQL query is exe
 SELECT * FROM leaderboard ORDER BY -ABS(score) LIMIT 5
 ```
 
-This selects all rows from the `leaderboards` table, ordered by `-ABS(score)` with a limit of 5
+This selects all rows from the [`leaderboard`](#leaderboard) table, ordered by `-ABS(score)` with a limit of 5
 
 `-ABS(score)` means the absolute value of score. This is required as `score` is stored as a `VARCHAR` in the SQL table. The `-` in from means decending.
 
