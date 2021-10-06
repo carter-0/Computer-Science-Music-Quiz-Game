@@ -151,7 +151,7 @@ for i in db_manager.get_top_5():
         print(f"{i[1]}: {i[2]}")
 ```
 
-In this extract, var i is a list of a score, containing (id, name, score). Therefore when i[1] is printed, it prints the name. This applies similarly to the score.
+In this context, var i is a list of a score, containing (id, name, score). Therefore when i[1] is printed, it prints the name. This applies similarly to the score.
 
 Finally, the exit() function is called. This terminates the program.
 
