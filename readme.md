@@ -163,3 +163,190 @@ exit()
 
 `db_manager.py` is the file containing all of the functions that actually interact with the database using SQL queries.
 
+#### check_login()
+
+the first function to be defined in this file is `check_login`
+
+```
+def check_login(username, password): ##checks for username and password combo in sqlite database
+    conn = sqlite3.connect('nea.db')
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM logins WHERE username = ? AND password = ?", (username, password)) ##SQL query is executed
+    rows = c.fetchall()
+    conn.close()
+
+    if len(rows) == 0: ##var rows contains all instances of matching usr:pass combos therefore if the length = 0, the login is incorrect
+        return False
+    else:
+        return True
+```
+
+This function takes 2 positional arguments: `username` and `password`. The purpose of the function is to check if the `username` and `password` combination is valid.
+
+In the first 2 lines, a connection to the database file is established:
+
+```
+conn = sqlite3.connect('nea.db')
+c = conn.cursor()
+```
+
+The defined cursor is then used to execute the SQL query:
+
+`SELECT * FROM logins WHERE username = ? AND password = ?`
+
+This query selects all rows from the logins table where the `username = ?` and the `password = ?`. The ?'s in this context are passed through to the sqlite3 module where the `username` and the `password` variables are substituted in respectively in order to prevent potential SQL vunerabilities.
+
+The rows from the result of this are fetched as can be seen, and the file is closed:
+
+```
+rows = c.fetchall()
+conn.close()
+```
+
+Finally, an `if` statement checks the length of the resulting rows. If the length of them is 0, the login is incorrect, and False is returned. Therefore if the length is greater than 0 True is returned.
+
+#### get_songs()
+
+The next function is `get_songs()`. This function returns a nested list of all the songs and artists, and does not have any arguments.
+
+```
+def get_songs(): ##return nested list of all song names and artists
+    conn = sqlite3.connect('nea.db')
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM songs")
+    rows = c.fetchall()
+    conn.close()
+
+    return rows
+```
+
+similarly to before, the connection to the database is establised and the cursor is defined:
+
+```
+conn = sqlite3.connect('nea.db')
+c = conn.cursor()
+```
+
+After this, the SQL Query `SELECT * FROM songs` is executed, and the result is sored in the variable `rows` before the file is closed.
+
+```
+c.execute("SELECT * FROM songs")
+rows = c.fetchall()
+conn.close()
+```
+
+From this point, the variable `rows` is returned.
+
+#### submit_to_leaderboard
+
+The function `submit_to_leaderboard()` takes 2 positional arguments: `username` and `score`.
+
+```
+def submit_to_leaderboard(username, score): ##add score to leaderboard table
+    conn = sqlite3.connect('nea.db')
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM leaderboard WHERE username = ?", (username,))
+    rows = c.fetchall()
+
+    if len(rows) == 0:
+        c.execute("INSERT INTO leaderboard(username, score) VALUES(?, ?)", username, str(score))
+    else:
+        if int(score) < int(rows[0][2]):
+            conn.close()
+            return
+        else:
+            c.execute("UPDATE leaderboard SET score = ? WHERE username = ?", (str(score), username))
+
+    conn.commit()
+    conn.close()
+```
+
+After the SQL file is opened:
+
+```
+conn = sqlite3.connect('nea.db')
+c = conn.cursor()
+```
+
+The `leaderboard` table is then queried for all of its rows matching the `username` of the user
+
+```
+SELECT * FROM leaderboard WHERE username = ?
+```
+
+This is done to check if the user already exists in the leaderboard so their score can be updated, and if not they can be added.
+
+This is then stored in `rows` and if the user does exist (equal to 0), the following SQL string is executed:
+
+```
+INSERT INTO leaderboard(username, score) VALUES(?, ?)
+```
+
+This inserts the `username` with the `score` into the `leaderboard` table
+
+However if the user does exist, the SQL commands `UPDATE` is used instead but, before it can be updated the score is checked with the user's old score to check if it's a highscore or not.
+
+```
+if int(score) < int(rows[0][2]):
+    conn.close()
+    return
+```
+
+This prevents the user's old highscore from being overwritten. If the score is a highscore, it can be updated:
+
+```
+UPDATE leaderboard SET score = ? WHERE username = ?
+```
+
+This updates the column `score` for the user in the row where the `username` matches.
+
+#### get_top_5()
+
+This function returns the top 5 scores from the leaderboard database in the form of a nested list.
+
+```
+def get_top_5(): ##returns top 5 from leaderboard in nested list
+    conn = sqlite3.connect('nea.db')
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM leaderboard ORDER BY -ABS(score) LIMIT 5") ##SQL: top 5 ordered by score descending
+    rows = c.fetchall()
+
+    return rows
+```
+
+In the first lines the SQL database is opened and the following SQL query is executed:
+
+```
+SELECT * FROM leaderboard ORDER BY -ABS(score) LIMIT 5
+```
+
+This selects all rows from the `leaderboards` table, ordered by `-ABS(score)` with a limit of 5
+
+`-ABS(score)` means the absolute value of score. This is required as `score` is stored as a `VARCHAR` in the SQL table. The `-` in from means decending.
+
+`LIMIT 5` means stop at 5 results. This is to get the top 5.
+
+The final row returns the `rows`.
+
+### nea.db
+
+This file is a SQLite 3.0 database file. It contains 3 tables:
+* leaderboard
+* logins
+* songs
+
+#### leaderboard
+
+This table has the columns `id`, `username` and `score`
+
+#### logins
+
+This table has the columns `id`, `username` and `password`
+
+#### songs
+
+This table has the columns `id`, `song_name` and `artist_name`
