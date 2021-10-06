@@ -158,3 +158,8 @@ Finally, the `exit()` function is called. This terminates the program.
 ```
 exit()
 ```
+
+### db_manager.py
+
+`db_manager.py` is the file containing all of the functions that actually interact with the database using SQL queries.
+
