@@ -128,7 +128,7 @@ def nea_exit(username, score):
     exit()
 ```
 
-This function is the last peice of code run, as it ends with a call to exit() which terminates the program.
+This function is the last peice of code run, as it ends with a call to `exit()` which terminates the program.
 
 On the first line, the new score is submitted to the database
 
@@ -144,16 +144,16 @@ print(f"You got {str(score)}!\n")
 print("Top 5 scores:")
 ```
 
-To acutally get the top 5 scores, the get_top_5() function is called, and the results are iterated over:
+To acutally get the top 5 scores, the `get_top_5()` function is called, and the results are iterated over:
 
 ```
 for i in db_manager.get_top_5():
         print(f"{i[1]}: {i[2]}")
 ```
 
-In this context, var i is a list of a score, containing (id, name, score). Therefore when i[1] is printed, it prints the name. This applies similarly to the score.
+In this context, var i is a list of a score, containing `(id, name, score)`. Therefore when `i[1]` is printed, it prints the name. This applies similarly to the score with `i[2]`.
 
-Finally, the exit() function is called. This terminates the program.
+Finally, the `exit()` function is called. This terminates the program.
 
 ```
 exit()
