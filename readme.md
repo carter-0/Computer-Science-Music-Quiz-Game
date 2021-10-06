@@ -3,9 +3,9 @@
 ### Structure:
 
 This project is broken down into 3 files:
-* main.py - Main Code
-* db_manager.py - Contains functions for interacting with SQLite 3.0 Database
-* nea.db - SQLite 3.0 Database file - contains Scores, Songs and Logins
+* [main.py](#mainpy) - Main Code
+* [db_manager.py](#db_managerpy) - Contains functions for interacting with SQLite 3.0 Database
+*  [nea.db](#neadb) - SQLite 3.0 Database file - contains Scores, Songs and Logins
 
 ### main.py:
 
@@ -21,7 +21,7 @@ def try_login():
 	return db_manager.check_login(username, password), username, password
 ```
 
-This function queries the SQL database using the `db_manager.py` file to check if the login is valid. The returned variables are assigned as can be seen below, and used to check if the user is authenticated:
+This function queries the SQL database using the [db_manager.py](#db_managerpy) file and the [`check_login()`](#check_login) function to check if the login is valid. The returned variables are assigned as can be seen below, and used to check if the user is authenticated:
 
 ```
 logged_in, username, password = try_login()
@@ -130,7 +130,7 @@ def nea_exit(username, score):
 
 This function is the last peice of code run, as it ends with a call to `exit()` which terminates the program.
 
-On the first line, the new score is submitted to the database
+On the first line, the new score is submitted to the database with [`submit_to_leaderboard()`](#submit_to_leaderboard)
 
 ```
 db_manager.submit_to_leaderboard(username, str(score))
@@ -144,7 +144,7 @@ print(f"You got {str(score)}!\n")
 print("Top 5 scores:")
 ```
 
-To acutally get the top 5 scores, the `get_top_5()` function is called, and the results are iterated over:
+To acutally get the top 5 scores, the [`get_top_5()`](#get_top_5) function is called, and the results are iterated over:
 
 ```
 for i in db_manager.get_top_5():
@@ -165,7 +165,7 @@ exit()
 
 #### check_login()
 
-the first function to be defined in this file is `check_login`
+the first function to be defined in this file is `check_login()`
 
 ```
 def check_login(username, password): ##checks for username and password combo in sqlite database
@@ -184,7 +184,7 @@ def check_login(username, password): ##checks for username and password combo in
 
 This function takes 2 positional arguments: `username` and `password`. The purpose of the function is to check if the `username` and `password` combination is valid.
 
-In the first 2 lines, a connection to the database file is established:
+In the first 2 lines, a connection to the [database](#neadb) file is established:
 
 ```
 conn = sqlite3.connect('nea.db')
@@ -195,7 +195,7 @@ The defined cursor is then used to execute the SQL query:
 
 `SELECT * FROM logins WHERE username = ? AND password = ?`
 
-This query selects all rows from the logins table where the `username = ?` and the `password = ?`. The ?'s in this context are passed through to the sqlite3 module where the `username` and the `password` variables are substituted in respectively in order to prevent potential SQL vunerabilities.
+This query selects all rows from the [`logins`](#logins) table where the `username = ?` and the `password = ?`. The ?'s in this context are passed through to the sqlite3 module where the `username` and the `password` variables are substituted in respectively in order to prevent potential SQL vunerabilities.
 
 The rows from the result of this are fetched as can be seen, and the file is closed:
 
@@ -271,7 +271,7 @@ conn = sqlite3.connect('nea.db')
 c = conn.cursor()
 ```
 
-The `leaderboard` table is then queried for all of its rows matching the `username` of the user
+The [`leaderboard`](#leaderboard) table is then queried for all of its rows matching the `username` of the user
 
 ```
 SELECT * FROM leaderboard WHERE username = ?
@@ -285,7 +285,7 @@ This is then stored in `rows` and if the user does exist (equal to 0), the follo
 INSERT INTO leaderboard(username, score) VALUES(?, ?)
 ```
 
-This inserts the `username` with the `score` into the `leaderboard` table
+This inserts the `username` with the `score` into the [`leaderboard`](#leaderboard) table
 
 However if the user does exist, the SQL commands `UPDATE` is used instead but, before it can be updated the score is checked with the user's old score to check if it's a highscore or not.
 
