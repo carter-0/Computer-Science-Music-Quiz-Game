@@ -107,4 +107,54 @@ else:
     print("\ncorrect! +2 score")
 ```
 
-however if it's not, 
+however if it's not, the user is given another chance:
+
+```
+if player_guess().lower() != song_name.lower(): ##Second Attempt
+            nea_exit(username, score)
+```
+
+As can be seen here, if the second attempt is wrong, the exit logic function is run.
+
+```
+def nea_exit(username, score):
+    ##display current score, update scores db, display top 5 scores from db
+    db_manager.submit_to_leaderboard(username, str(score))
+    print("\nGame Over!")
+    print(f"You got {str(score)}!\n")
+    print("Top 5 scores:")
+    for i in db_manager.get_top_5():
+        print(f"{i[1]}: {i[2]}")
+    exit()
+```
+
+This function is the last peice of code run, as it ends with a call to exit() which terminates the program.
+
+On the first line, the new score is submitted to the database
+
+```
+db_manager.submit_to_leaderboard(username, str(score))
+```
+
+Then, the player's score is printed, and the top 5 scores are prepared to be printed.
+
+```
+print("\nGame Over!")
+print(f"You got {str(score)}!\n")
+print("Top 5 scores:")
+```
+
+To acutally get the top 5 scores, the get_top_5() function is called, and the results are iterated over:
+
+```
+for i in db_manager.get_top_5():
+        print(f"{i[1]}: {i[2]}")
+```
+
+In this extract, var i is a list of a score, containing (id, name, score). Therefore when i[1] is printed, it prints the name. This applies similarly to the score.
+
+Finally, the exit() function is called. This terminates the program.
+
+```
+exit()
+```
