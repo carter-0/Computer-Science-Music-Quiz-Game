@@ -2,7 +2,7 @@
 
 ### Structure:
 
-This project is broken down into 3 files:
+This project is split into 3 files:
 * [main.py](#mainpy) - Main Code
 * [db_manager.py](#db_managerpy) - Contains functions for interacting with SQLite 3.0 Database
 *  [nea.db](#neadb) - SQLite 3.0 Database file - contains Scores, Songs and Logins
