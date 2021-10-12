@@ -31,7 +31,7 @@ def submit_to_leaderboard(username, score): ##add score to leaderboard table
     rows = c.fetchall()
 
     if len(rows) == 0:
-        c.execute("INSERT INTO leaderboard(username, score) VALUES(?, ?)", username, str(score))
+        c.execute("INSERT INTO leaderboard(username, score) VALUES(?, ?)", (username, str(score)))
     else:
         if int(score) < int(rows[0][2]):
             conn.close()
