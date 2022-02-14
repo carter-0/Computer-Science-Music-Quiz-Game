@@ -5,7 +5,7 @@
 This project is split into 3 files:
 * [main.py](#mainpy) - Main Code
 * [db_manager.py](#db_managerpy) - Contains functions for interacting with SQLite 3.0 Database
-*  [nea.db](#neadb) - SQLite 3.0 Database file - contains Scores, Songs and Logins
+* [nea.db](#neadb) - SQLite 3.0 Database file - contains Scores, Songs and Logins
 
 ### main.py:
 
